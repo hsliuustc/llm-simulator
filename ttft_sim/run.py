@@ -28,7 +28,9 @@ def cli() -> None:
 @click.option("--warmup-seconds", type=float, default=None, help="Warmup time in seconds (excluded from metrics)")
 @click.option("--seed", type=int, default=None, help="Random seed")
 @click.option("--config", type=click.Path(exists=True, dir_okay=False), default=None, help="YAML config file path")
-def simulate(mode: Optional[str], sim_seconds: Optional[float], warmup_seconds: Optional[float], seed: Optional[int], config: Optional[str]) -> None:
+@click.option("--dump-ttft", type=click.Path(dir_okay=False), default=None, help="Optional path to dump raw TTFT samples as JSON array")
+
+def simulate(mode: Optional[str], sim_seconds: Optional[float], warmup_seconds: Optional[float], seed: Optional[int], config: Optional[str], dump_ttft: Optional[str]) -> None:
     cfg: SimConfig = load_config(config)
 
     if mode is not None:
@@ -67,7 +69,7 @@ def simulate(mode: Optional[str], sim_seconds: Optional[float], warmup_seconds: 
         cfg.output_tokens.min_value,
     )
 
-    _, stats = run_simulation(
+    metrics, stats = run_simulation(
         mode=cfg.mode,
         sim_seconds=cfg.sim_seconds,
         warmup_seconds=cfg.warmup_seconds,
@@ -106,6 +108,11 @@ def simulate(mode: Optional[str], sim_seconds: Optional[float], warmup_seconds: 
     })
 
     print(json.dumps(stats, indent=2))
+
+    if dump_ttft is not None:
+        # Dump all TTFT samples regardless of warmup; plotting script can filter
+        with open(dump_ttft, "w", encoding="utf-8") as f:
+            json.dump(metrics.ttft_values, f)
 
 
 if __name__ == "__main__":
