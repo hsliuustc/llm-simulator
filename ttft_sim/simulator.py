@@ -18,21 +18,27 @@ class Request:
 
 
 @dataclass
+class TTFTRecord:
+    event_time: float
+    ttft_seconds: float
+
+
+@dataclass
 class Metrics:
-    ttft_values: List[float]
+    ttft_records: List[TTFTRecord]
     completed_requests: int
     dropped_requests: int
     start_time: float
     end_time: float
 
-    def add_ttft(self, value: float) -> None:
-        self.ttft_values.append(value)
+    def add_ttft(self, event_time: float, ttft_seconds: float) -> None:
+        self.ttft_records.append(TTFTRecord(event_time=event_time, ttft_seconds=ttft_seconds))
 
     def finalize(self, end_time: float) -> None:
         self.end_time = end_time
 
     def summary(self, warmup: float = 0.0) -> dict:
-        filtered = [x for x in self.ttft_values if x >= warmup]
+        filtered = [r.ttft_seconds for r in self.ttft_records if r.event_time >= warmup]
         if not filtered:
             return {
                 "num_samples": 0,
@@ -86,7 +92,7 @@ class MonolithicSimulator:
             # Wait until TTFT within the service while holding the GPU
             yield self.env.timeout(prefill_time + first_token_time)
             ttft = self.env.now - req.arrival_time
-            metrics.add_ttft(ttft)
+            metrics.add_ttft(self.env.now, ttft)
             # Finish remaining decode while still holding the GPU
             remaining_decode_tokens = max(req.output_tokens - 1, 0)
             remaining_decode_time = remaining_decode_tokens / self.decode_rate
@@ -121,7 +127,7 @@ class DisaggregatedSimulator:
             first_token_time = 1.0 / self.decode_rate
             yield self.env.timeout(first_token_time)
             ttft = self.env.now - req.arrival_time
-            metrics.add_ttft(ttft)
+            metrics.add_ttft(self.env.now, ttft)
             # Continue generating remaining tokens while holding decode pool
             remaining_decode_tokens = max(req.output_tokens - 1, 0)
             remaining_decode_time = remaining_decode_tokens / self.decode_rate
@@ -154,7 +160,7 @@ def run_simulation(
         prefill_gpus, decode_gpus, prefill_r, decode_r = disagg_params
         sim = DisaggregatedSimulator(env, prefill_gpus, decode_gpus, prefill_r, decode_r)
 
-    metrics = Metrics(ttft_values=[], completed_requests=0, dropped_requests=0, start_time=0.0, end_time=0.0)
+    metrics = Metrics(ttft_records=[], completed_requests=0, dropped_requests=0, start_time=0.0, end_time=0.0)
 
     def arrival_process(env: simpy.Environment) -> simpy.events.Event:
         request_id = 0

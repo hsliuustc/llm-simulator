@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 import yaml
 
@@ -49,12 +49,12 @@ class SimConfig:
     warmup_seconds: float = 60.0
     random_seed: int = 42
 
-    arrival: ArrivalConfig = ArrivalConfig()
-    prompt_tokens: PromptConfig = PromptConfig()
-    output_tokens: OutputConfig = OutputConfig()
+    arrival: ArrivalConfig = field(default_factory=ArrivalConfig)
+    prompt_tokens: PromptConfig = field(default_factory=PromptConfig)
+    output_tokens: OutputConfig = field(default_factory=OutputConfig)
 
-    cluster_mono: ClusterMonolithic = ClusterMonolithic()
-    cluster_disagg: ClusterDisagg = ClusterDisagg()
+    cluster_mono: ClusterMonolithic = field(default_factory=ClusterMonolithic)
+    cluster_disagg: ClusterDisagg = field(default_factory=ClusterDisagg)
 
     def to_dict(self) -> dict:
         return {
