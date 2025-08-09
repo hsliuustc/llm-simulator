@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sweep arrival rates and plot TTFT percentiles vs arrival rate for mono/disagg."""
+"""Sweep arrival rates and prefill token rates; plot TTFT vs arrival with multiple prefill curves."""
 
 from __future__ import annotations
 
@@ -8,19 +8,16 @@ from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 
-from .config import SimConfig
-from .simulator import run_simulation
+from ..core.config import SimConfig
+from ..core.simulator import run_simulation
 
 
-def run_point(mode: str, rate: float, cfg: SimConfig) -> dict:
-    # Use same cfg but override mode and arrival rate
-    cfg_local = SimConfig(**cfg.to_dict())  # shallow copy via dict
-    cfg_local.mode = mode
-    # Build params
+def run_point(mode: str, rate: float, prefill_tokens_per_s: float, cfg: SimConfig) -> dict:
+    # Build params using overrides for prefill
     if mode == "mono":
         mono_params = (
             cfg.cluster_mono.num_gpus,
-            cfg.cluster_mono.prefill_tokens_per_s,
+            prefill_tokens_per_s,
             cfg.cluster_mono.decode_tokens_per_s,
         )
         disagg_params = None
@@ -29,7 +26,7 @@ def run_point(mode: str, rate: float, cfg: SimConfig) -> dict:
         disagg_params = (
             cfg.cluster_disagg.prefill_gpus,
             cfg.cluster_disagg.decode_gpus,
-            cfg.cluster_disagg.prefill_tokens_per_s,
+            prefill_tokens_per_s,
             cfg.cluster_disagg.decode_tokens_per_s,
         )
 
@@ -53,6 +50,8 @@ def run_point(mode: str, rate: float, cfg: SimConfig) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rates", type=str, default="0.5,1,2,3,4,5", help="Comma-separated arrival rates per second")
+    ap.add_argument("--prefill", type=str, default="4000,8000,16000", help="Comma-separated prefill token rates per GPU (tokens/s)")
+    ap.add_argument("--mode", type=str, default="disagg", choices=["mono", "disagg"], help="Which architecture to plot")
     ap.add_argument("--sim-seconds", type=float, default=600.0)
     ap.add_argument("--warmup-seconds", type=float, default=60.0)
     args = ap.parse_args()
@@ -60,32 +59,34 @@ def main() -> None:
     cfg = SimConfig(sim_seconds=args.sim_seconds, warmup_seconds=args.warmup_seconds)
 
     rates = [float(x) for x in args.rates.split(",")]
+    prefill_rates = [float(x) for x in args.prefill.split(",")]
 
-    results = {"mono": [], "disagg": []}
-    for mode in ("mono", "disagg"):
+    # Collect results: dict[prefill_rate] -> list[(rate, stats)]
+    results = {}
+    for p in prefill_rates:
+        series = []
         for r in rates:
-            stats = run_point(mode, r, cfg)
-            results[mode].append((r, stats))
+            stats = run_point(args.mode, r, p, cfg)
+            series.append((r, stats))
+        results[p] = series
 
-    # Plot percentiles
+    # Plot percentiles for chosen mode
     plt.figure(figsize=(7, 5))
-    for mode, color in [("mono", "C0"), ("disagg", "C3")]:
-        xs = [r for r, _ in results[mode]]
-        p50 = [s["p50_ttft_s"] for _, s in results[mode]]
-        p90 = [s["p90_ttft_s"] for _, s in results[mode]]
-        p99 = [s["p99_ttft_s"] for _, s in results[mode]]
-        plt.plot(xs, p50, marker="o", color=color, linestyle="-", label=f"{mode} P50")
-        plt.plot(xs, p90, marker="s", color=color, linestyle="--", label=f"{mode} P90")
-        plt.plot(xs, p99, marker="^", color=color, linestyle=":", label=f"{mode} P99")
+    markers = ["o", "s", "^", "D", "P", "X"]
+    for idx, (p, series) in enumerate(sorted(results.items())):
+        xs = [r for r, _ in series]
+        p50 = [s["p50_ttft_s"] for _, s in series]
+        plt.plot(xs, p50, marker=markers[idx % len(markers)], label=f"prefill {int(p)} tok/s")
 
     plt.xlabel("Arrival rate (req/s)")
-    plt.ylabel("TTFT (s)")
-    plt.title("TTFT percentiles vs arrival rate")
+    plt.ylabel("TTFT P50 (s)")
+    plt.title(f"TTFT P50 vs arrival — {args.mode} — varying prefill rate")
     plt.grid(True, alpha=0.3)
-    plt.legend()
+    plt.legend(title="Prefill rate")
     plt.tight_layout()
-    plt.savefig("fig_ttft_vs_rate.png", dpi=150)
-    print("Saved fig_ttft_vs_rate.png")
+    out = f"fig_ttft_vs_rate_prefill_{args.mode}.png"
+    plt.savefig(out, dpi=150)
+    print(f"Saved {out}")
 
 
 if __name__ == "__main__":

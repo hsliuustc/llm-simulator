@@ -10,7 +10,7 @@ from typing import Dict, Any
 def run_sim(mode: str, sim_seconds: int = 300, warmup_seconds: int = 30) -> Dict[str, Any]:
     """Run a simulation and return the stats."""
     cmd = [
-        sys.executable, "-m", "ttft_sim.run", "simulate",
+        sys.executable, "-m", "src.cli.run", "simulate",
         "--mode", mode,
         "--sim-seconds", str(sim_seconds),
         "--warmup-seconds", str(warmup_seconds),

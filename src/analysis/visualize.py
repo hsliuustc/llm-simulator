@@ -13,7 +13,7 @@ import numpy as np
 def run_sim_with_details(mode: str, sim_seconds: int = 300, warmup_seconds: int = 30) -> Dict[str, Any]:
     """Run a simulation and return detailed stats including raw TTFT values."""
     cmd = [
-        sys.executable, "-m", "ttft_sim.run", "simulate",
+        sys.executable, "-m", "src.cli.run", "simulate",
         "--mode", mode,
         "--sim-seconds", str(sim_seconds),
         "--warmup-seconds", str(warmup_seconds),

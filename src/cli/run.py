@@ -6,8 +6,8 @@ from typing import Optional
 
 import click
 
-from .config import SimConfig, load_config
-from .simulator import run_simulation
+from ..core.config import SimConfig, load_config
+from ..core.simulator import run_simulation
 
 
 def _log_to_real(mu: float, sigma: float) -> tuple[float, float]:
