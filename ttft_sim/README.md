@@ -32,10 +32,10 @@ python -m ttft_sim.run simulate --mode mono --sim-seconds 600
 
 ## Configuration
 
-You can supply a YAML config to adjust workload and cluster parameters. See `ttft_sim/example_config.yaml` for a template.
+You can supply a YAML config to adjust workload and cluster parameters. See `examples/example_config.yaml` for a template.
 
 ```bash
-python -m ttft_sim.run simulate --config ttft_sim/example_config.yaml
+python -m ttft_sim.run simulate --config examples/example_config.yaml
 ```
 
 Key parameters:
@@ -72,7 +72,7 @@ Key parameters:
 To ensure YAML numbers match your expectations, the CLI prints resolved distributions in both log-space and real-space:
 
 ```bash
-python -m ttft_sim.run simulate --config ttft_sim/example_config.yaml
+python -m ttft_sim.run simulate --config examples/example_config.yaml
 ```
 
 Look for `prompt_tokens_log`, `prompt_tokens_real`, `output_tokens_log`, and `output_tokens_real` in the JSON output.
@@ -86,3 +86,9 @@ Look for `prompt_tokens_log`, `prompt_tokens_real`, `output_tokens_log`, and `ou
 
 - This is a simplified model intended for comparative study. It does not simulate step-level batching/KV cache; extensions welcome.
 - It follows the spirit of DistServe by separating prefill and decode pools in `disagg` mode.
+
+## Documentation
+
+- [Architecture Design](../docs/ARCHITECTURE.md) - System design and extensibility
+- [TTFT Theory](../docs/TTFT_Disaggregated.md) - Theoretical background
+- [Project Summary](../docs/SUMMARY.md) - Development history and features
