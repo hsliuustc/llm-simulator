@@ -1,0 +1,123 @@
+# Queue Process Impact Study Configuration
+# This configuration file is designed for studying the impact of queue processes on TTFT
+# under different arrival rates, processing times, and FCFS scheduling.
+
+# ============================================================================
+# Study Parameters
+# ============================================================================
+mode: disagg  # Focus on disaggregated architecture for queue analysis
+sim_seconds: 600.0  # 10 minutes simulation
+warmup_seconds: 60.0  # 1 minute warmup
+random_seed: 42  # For reproducibility
+
+# ============================================================================
+# Arrival Process Configuration
+# ============================================================================
+arrival:
+  rate_per_s: 2.0  # Medium load for baseline study
+
+# ============================================================================
+# Token Distribution Configuration
+# ============================================================================
+prompt_tokens:
+  mode: real_mean_std  # Use real-space for easier interpretation
+  mean: 1024  # Average prompt length in tokens
+  std: 512    # Standard deviation
+  min_value: 8
+
+output_tokens:
+  mode: real_mean_std
+  mean: 256   # Average output length in tokens
+  std: 128    # Standard deviation
+  min_value: 16
+
+# ============================================================================
+# Cluster Configuration - Disaggregated Architecture
+# ============================================================================
+cluster_disagg:
+  prefill_gpus: 2      # Number of prefill GPUs
+  decode_gpus: 2       # Number of decode GPUs
+  prefill_tokens_per_s: 8000.0  # Prefill processing rate per GPU
+  decode_tokens_per_s: 2000.0   # Decode processing rate per GPU
+
+# ============================================================================
+# Queue Impact Study Scenarios
+# ============================================================================
+# The following scenarios can be used with the queue_impact.py analysis tool:
+
+# Scenario 1: Low Load FCFS
+# - Arrival rate: 0.5 req/s
+# - Purpose: Establish baseline TTFT without queueing
+# - Expected: Low TTFT, minimal queue wait times
+
+# Scenario 2: Medium Load FCFS  
+# - Arrival rate: 2.0 req/s
+# - Purpose: Observe moderate queueing effects
+# - Expected: Moderate TTFT increase, some queue wait times
+
+# Scenario 3: High Load FCFS
+# - Arrival rate: 4.0 req/s
+# - Purpose: Observe significant queueing effects
+# - Expected: High TTFT, significant queue wait times
+
+# Scenario 4: Slow Prefill FCFS
+# - Prefill rate: 4000 tokens/s (reduced from 8000)
+# - Prefill GPUs: 1 (reduced from 2)
+# - Purpose: Study prefill queue impact
+# - Expected: Prefill bottleneck, increased prefill queue wait times
+
+# Scenario 5: Slow Decode FCFS
+# - Decode rate: 1000 tokens/s (reduced from 2000)
+# - Decode GPUs: 1 (reduced from 2)
+# - Purpose: Study decode queue impact
+# - Expected: Decode bottleneck, increased decode queue wait times
+
+# Scenario 6: Balanced FCFS
+# - Prefill rate: 4000 tokens/s
+# - Decode rate: 4000 tokens/s
+# - Purpose: Study balanced processing times
+# - Expected: Balanced queue utilization
+
+# Scenario 7: Monolithic FCFS
+# - Mode: mono
+# - Purpose: Compare with disaggregated FCFS
+# - Expected: Different queueing characteristics
+
+# Scenario 8: Queue Saturation Study
+# - Arrival rate: 6.0 req/s
+# - Purpose: Study queue saturation effects
+# - Expected: Very high TTFT, queue saturation
+
+# Scenario 9: Variable Load FCFS
+# - High variance in token distributions
+# - Purpose: Study queue dynamics under variable load
+# - Expected: Increased TTFT variance
+
+# ============================================================================
+# Analysis Parameters
+# ============================================================================
+# These parameters are used by the queue_impact.py analysis tool:
+
+analysis:
+  # Queue wait time estimation method
+  queue_wait_estimation: "M/M/c_approximation"
+  
+  # Metrics to collect
+  metrics:
+    - "ttft_percentiles"
+    - "queue_wait_times"
+    - "resource_utilization"
+    - "throughput"
+    - "service_times"
+  
+  # Visualization settings
+  visualization:
+    save_plots: true
+    plot_format: "png"
+    dpi: 150
+    
+  # Report settings
+  report:
+    save_json: true
+    include_insights: true
+    include_statistics: true
