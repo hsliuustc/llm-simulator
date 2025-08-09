@@ -1,0 +1,163 @@
+{
+  "analysis_parameters": {
+    "simulation_seconds": 300.0,
+    "warmup_seconds": 30.0,
+    "total_scenarios": 6
+  },
+  "scenarios": [
+    {
+      "name": "2_prefill_2_decode_baseline",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 2,
+        "decode_rate": 2000.0,
+        "arrival_rate": 2.0
+      },
+      "performance": {
+        "mean_ttft": 0.07522462275676936,
+        "p50_ttft": 0.05449999999999022,
+        "p90_ttft": 0.1610030907595558,
+        "p99_ttft": 0.3420674999999919
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.001239592623580598,
+        "decode_wait": 1.6613580940328322e-05,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.0005
+      },
+      "utilization": {
+        "prefill": 0.06893729166666664,
+        "decode": 0.12462666666666664
+      }
+    },
+    {
+      "name": "2_prefill_1_decode",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 1,
+        "decode_rate": 2000.0,
+        "arrival_rate": 2.0
+      },
+      "performance": {
+        "mean_ttft": 0.1414420571269917,
+        "p50_ttft": 0.06874999999999432,
+        "p90_ttft": 0.272540220323009,
+        "p99_ttft": 1.4130895820140055
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.001239592623580598,
+        "decode_wait": 0.0001660036230597094,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.0005
+      },
+      "utilization": {
+        "prefill": 0.06893729166666664,
+        "decode": 0.24925333333333327
+      }
+    },
+    {
+      "name": "2_prefill_4_decode",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 4,
+        "decode_rate": 2000.0,
+        "arrival_rate": 2.0
+      },
+      "performance": {
+        "mean_ttft": 0.07349059555875943,
+        "p50_ttft": 0.054000000000002046,
+        "p90_ttft": 0.1540250000000015,
+        "p99_ttft": 0.3420674999999919
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.001239592623580598,
+        "decode_wait": 1.9781072812632792e-06,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.0005
+      },
+      "utilization": {
+        "prefill": 0.06893729166666664,
+        "decode": 0.06231333333333332
+      }
+    },
+    {
+      "name": "2_prefill_2_decode_slow",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 2,
+        "decode_rate": 1000.0,
+        "arrival_rate": 2.0
+      },
+      "performance": {
+        "mean_ttft": 0.08858041439208722,
+        "p50_ttft": 0.0595000000000141,
+        "p90_ttft": 0.18687500000000912,
+        "p99_ttft": 0.4885021716468891
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.001239592623580598,
+        "decode_wait": 7.118486588579347e-05,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.001
+      },
+      "utilization": {
+        "prefill": 0.06893729166666664,
+        "decode": 0.24925333333333327
+      }
+    },
+    {
+      "name": "2_prefill_2_decode_high_load",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 2,
+        "decode_rate": 2000.0,
+        "arrival_rate": 4.0
+      },
+      "performance": {
+        "mean_ttft": 0.08095899094237795,
+        "p50_ttft": 0.05562499999999915,
+        "p90_ttft": 0.1748250000000013,
+        "p99_ttft": 0.3941015466733868
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.002491330358021179,
+        "decode_wait": 3.682580399663075e-05,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.0005
+      },
+      "utilization": {
+        "prefill": 0.13388979166666673,
+        "decode": 0.25678166666666663
+      }
+    },
+    {
+      "name": "2_prefill_2_decode_balanced",
+      "configuration": {
+        "prefill_gpus": 2,
+        "decode_gpus": 2,
+        "decode_rate": 4000.0,
+        "arrival_rate": 2.0
+      },
+      "performance": {
+        "mean_ttft": 0.07355882731057806,
+        "p50_ttft": 0.053875000000005,
+        "p90_ttft": 0.1537750000000074,
+        "p99_ttft": 0.34181749999999683
+      },
+      "queue_metrics": {
+        "prefill_wait": 0.001239592623580598,
+        "decode_wait": 4.019827767131252e-06,
+        "prefill_service": 0.06944662405642538,
+        "decode_service": 0.00025
+      },
+      "utilization": {
+        "prefill": 0.06893729166666664,
+        "decode": 0.06231333333333332
+      }
+    }
+  ],
+  "key_insights": [],
+  "recommendations": [
+    "Best configuration: 2_prefill_4_decode with 0.07s TTFT"
+  ]
+}

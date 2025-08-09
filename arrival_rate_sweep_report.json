@@ -1,0 +1,596 @@
+{
+  "analysis_parameters": {
+    "simulation_seconds": 300.0,
+    "warmup_seconds": 30.0,
+    "arrival_rates": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      4.5,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+    ]
+  },
+  "configurations": {
+    "2_prefill_2_decode": {
+      "results": [
+        {
+          "arrival_rate": 0.5,
+          "mean_ttft": 0.06780135658914184,
+          "p99_ttft": 0.28004999999999197,
+          "utilization_prefill": 0.016495624999999996,
+          "utilization_decode": 0.034833333333333334,
+          "queue_wait_time_decode": 4.431345941820032e-06,
+          "throughput": 0.5
+        },
+        {
+          "arrival_rate": 1.0,
+          "mean_ttft": 0.07155419863095712,
+          "p99_ttft": 0.2871049999999935,
+          "utilization_prefill": 0.03211729166666667,
+          "utilization_decode": 0.05861166666666663,
+          "queue_wait_time_decode": 7.547648461195721e-06,
+          "throughput": 0.9366666666666666
+        },
+        {
+          "arrival_rate": 1.5,
+          "mean_ttft": 0.07197848955617073,
+          "p99_ttft": 0.3292050000000047,
+          "utilization_prefill": 0.04928625000000001,
+          "utilization_decode": 0.09161833333333332,
+          "queue_wait_time_decode": 1.2002097763462759e-05,
+          "throughput": 1.4433333333333334
+        },
+        {
+          "arrival_rate": 2.0,
+          "mean_ttft": 0.07522462275676936,
+          "p99_ttft": 0.3420674999999919,
+          "utilization_prefill": 0.06893729166666664,
+          "utilization_decode": 0.12462666666666664,
+          "queue_wait_time_decode": 1.6613580940328322e-05,
+          "throughput": 1.9333333333333333
+        },
+        {
+          "arrival_rate": 2.5,
+          "mean_ttft": 0.07558467143316594,
+          "p99_ttft": 0.32233500000000614,
+          "utilization_prefill": 0.08572770833333329,
+          "utilization_decode": 0.16016583333333329,
+          "queue_wait_time_decode": 2.1763623623687092e-05,
+          "throughput": 2.44
+        },
+        {
+          "arrival_rate": 3.0,
+          "mean_ttft": 0.07798598819688106,
+          "p99_ttft": 0.33533170767400367,
+          "utilization_prefill": 0.09991791666666668,
+          "utilization_decode": 0.19178833333333328,
+          "queue_wait_time_decode": 2.651630017503481e-05,
+          "throughput": 2.8566666666666665
+        },
+        {
+          "arrival_rate": 3.5,
+          "mean_ttft": 0.07931434566516196,
+          "p99_ttft": 0.36213679673737376,
+          "utilization_prefill": 0.11543583333333335,
+          "utilization_decode": 0.22161249999999996,
+          "queue_wait_time_decode": 3.1153573110472265e-05,
+          "throughput": 3.32
+        },
+        {
+          "arrival_rate": 4.0,
+          "mean_ttft": 0.08095899094237795,
+          "p99_ttft": 0.3941015466733868,
+          "utilization_prefill": 0.13388979166666673,
+          "utilization_decode": 0.25678166666666663,
+          "queue_wait_time_decode": 3.682580399663075e-05,
+          "throughput": 3.8833333333333333
+        },
+        {
+          "arrival_rate": 4.5,
+          "mean_ttft": 0.08563873808549206,
+          "p99_ttft": 0.4537960405327628,
+          "utilization_prefill": 0.15352833333333352,
+          "utilization_decode": 0.29105916666666676,
+          "queue_wait_time_decode": 4.257888292407239e-05,
+          "throughput": 4.46
+        },
+        {
+          "arrival_rate": 5.0,
+          "mean_ttft": 0.09174136354879352,
+          "p99_ttft": 0.534256600693169,
+          "utilization_prefill": 0.17048062500000022,
+          "utilization_decode": 0.32488749999999994,
+          "queue_wait_time_decode": 4.848741502436402e-05,
+          "throughput": 4.943333333333333
+        },
+        {
+          "arrival_rate": 6.0,
+          "mean_ttft": 0.10092650283101752,
+          "p99_ttft": 0.5860069716767797,
+          "utilization_prefill": 0.20257958333333362,
+          "utilization_decode": 0.3878091666666667,
+          "queue_wait_time_decode": 6.013698233614818e-05,
+          "throughput": 5.8966666666666665
+        },
+        {
+          "arrival_rate": 7.0,
+          "mean_ttft": 0.11311178455090334,
+          "p99_ttft": 0.7062550857387654,
+          "utilization_prefill": 0.2365697916666667,
+          "utilization_decode": 0.4383666666666666,
+          "queue_wait_time_decode": 7.017759183760592e-05,
+          "throughput": 6.843333333333334
+        },
+        {
+          "arrival_rate": 8.0,
+          "mean_ttft": 0.12380719462058556,
+          "p99_ttft": 0.778588510490204,
+          "utilization_prefill": 0.26747395833333326,
+          "utilization_decode": 0.492976666666666,
+          "queue_wait_time_decode": 8.177986627059508e-05,
+          "throughput": 7.826666666666667
+        },
+        {
+          "arrival_rate": 9.0,
+          "mean_ttft": 0.14452940872591294,
+          "p99_ttft": 0.9185100258123007,
+          "utilization_prefill": 0.3034466666666667,
+          "utilization_decode": 0.5567333333333329,
+          "queue_wait_time_decode": 9.643632500346424e-05,
+          "throughput": 8.823333333333334
+        },
+        {
+          "arrival_rate": 10.0,
+          "mean_ttft": 0.1665449784451574,
+          "p99_ttft": 1.026083259523358,
+          "utilization_prefill": 0.33475895833333336,
+          "utilization_decode": 0.6110391666666657,
+          "queue_wait_time_decode": 0.00010998135296591611,
+          "throughput": 9.8
+        }
+      ],
+      "bottleneck_threshold": null,
+      "saturation_point": null
+    },
+    "2_prefill_1_decode": {
+      "results": [
+        {
+          "arrival_rate": 0.5,
+          "mean_ttft": 0.10435603753939604,
+          "p99_ttft": 1.4201173836047072,
+          "utilization_prefill": 0.016495624999999996,
+          "utilization_decode": 0.06966666666666667,
+          "queue_wait_time_decode": 3.744177714080975e-05,
+          "throughput": 0.5
+        },
+        {
+          "arrival_rate": 1.0,
+          "mean_ttft": 0.12297995153266714,
+          "p99_ttft": 2.023323724338027,
+          "utilization_prefill": 0.03211729166666667,
+          "utilization_decode": 0.11704499999999994,
+          "queue_wait_time_decode": 6.628027475918929e-05,
+          "throughput": 0.9333333333333333
+        },
+        {
+          "arrival_rate": 1.5,
+          "mean_ttft": 0.12877473326304864,
+          "p99_ttft": 1.7250404295065338,
+          "utilization_prefill": 0.04928625000000001,
+          "utilization_decode": 0.18323666666666663,
+          "queue_wait_time_decode": 0.00011217243673197863,
+          "throughput": 1.4433333333333334
+        },
+        {
+          "arrival_rate": 2.0,
+          "mean_ttft": 0.1414420571269917,
+          "p99_ttft": 1.4130895820140055,
+          "utilization_prefill": 0.06893729166666664,
+          "utilization_decode": 0.24925333333333327,
+          "queue_wait_time_decode": 0.0001660036230597094,
+          "throughput": 1.9333333333333333
+        },
+        {
+          "arrival_rate": 2.5,
+          "mean_ttft": 0.16881650785373944,
+          "p99_ttft": 1.2386593723141497,
+          "utilization_prefill": 0.08572770833333329,
+          "utilization_decode": 0.32033166666666657,
+          "queue_wait_time_decode": 0.0002356529287569181,
+          "throughput": 2.44
+        },
+        {
+          "arrival_rate": 3.0,
+          "mean_ttft": 0.1955217992145613,
+          "p99_ttft": 1.5974889219450397,
+          "utilization_prefill": 0.09991791666666668,
+          "utilization_decode": 0.38357666666666657,
+          "queue_wait_time_decode": 0.00031113087867104305,
+          "throughput": 2.8566666666666665
+        },
+        {
+          "arrival_rate": 3.5,
+          "mean_ttft": 0.22894031873323017,
+          "p99_ttft": 1.839660374671506,
+          "utilization_prefill": 0.11543583333333335,
+          "utilization_decode": 0.44272333333333325,
+          "queue_wait_time_decode": 0.0003972204111662069,
+          "throughput": 3.316666666666667
+        },
+        {
+          "arrival_rate": 4.0,
+          "mean_ttft": 0.2395595230311965,
+          "p99_ttft": 1.644019434862132,
+          "utilization_prefill": 0.13388979166666673,
+          "utilization_decode": 0.5092533333333333,
+          "queue_wait_time_decode": 0.0005188556213660817,
+          "throughput": 3.85
+        },
+        {
+          "arrival_rate": 4.5,
+          "mean_ttft": 0.3178503796199895,
+          "p99_ttft": 1.9017725097931844,
+          "utilization_prefill": 0.15352833333333352,
+          "utilization_decode": 0.5821183333333335,
+          "queue_wait_time_decode": 0.0006965109739998171,
+          "throughput": 4.46
+        },
+        {
+          "arrival_rate": 5.0,
+          "mean_ttft": 0.42694975702931637,
+          "p99_ttft": 3.158097233914008,
+          "utilization_prefill": 0.17048062500000022,
+          "utilization_decode": 0.6479583333333334,
+          "queue_wait_time_decode": 0.0009202864244289269,
+          "throughput": 4.92
+        },
+        {
+          "arrival_rate": 6.0,
+          "mean_ttft": 0.6605887687309134,
+          "p99_ttft": 3.546101332697668,
+          "utilization_prefill": 0.20257958333333362,
+          "utilization_decode": 0.7730266666666669,
+          "queue_wait_time_decode": 0.001702901956176939,
+          "throughput": 5.886666666666667
+        },
+        {
+          "arrival_rate": 7.0,
+          "mean_ttft": 1.2127580012137993,
+          "p99_ttft": 3.974578244800492,
+          "utilization_prefill": 0.2365697916666667,
+          "utilization_decode": 0.8767333333333333,
+          "queue_wait_time_decode": 0.003556246619794481,
+          "throughput": 6.843333333333334
+        },
+        {
+          "arrival_rate": 8.0,
+          "mean_ttft": 6.269948442492289,
+          "p99_ttft": 12.16421882394078,
+          "utilization_prefill": 0.26747395833333326,
+          "utilization_decode": 0.9818399999999987,
+          "queue_wait_time_decode": 0.02703303964757514,
+          "throughput": 7.786666666666667
+        },
+        {
+          "arrival_rate": 9.0,
+          "mean_ttft": 20.871380923682445,
+          "p99_ttft": 33.38206460699161,
+          "utilization_prefill": 0.3034466666666667,
+          "utilization_decode": 0.9995933333333318,
+          "queue_wait_time_decode": 1.2290081967166133,
+          "throughput": 7.966666666666667
+        },
+        {
+          "arrival_rate": 10.0,
+          "mean_ttft": 35.746014550352555,
+          "p99_ttft": 56.103833465562545,
+          "utilization_prefill": 0.33475895833333336,
+          "utilization_decode": 0.9995933333333318,
+          "queue_wait_time_decode": 1.2290081967166133,
+          "throughput": 7.966666666666667
+        }
+      ],
+      "bottleneck_threshold": 7.0,
+      "saturation_point": 8.0
+    },
+    "2_prefill_4_decode": {
+      "results": [
+        {
+          "arrival_rate": 0.5,
+          "mean_ttft": 0.06780135658914184,
+          "p99_ttft": 0.28004999999999197,
+          "utilization_prefill": 0.016495624999999996,
+          "utilization_decode": 0.017416666666666667,
+          "queue_wait_time_decode": 5.466510430834257e-07,
+          "throughput": 0.5
+        },
+        {
+          "arrival_rate": 1.0,
+          "mean_ttft": 0.07054016064256358,
+          "p99_ttft": 0.2871049999999935,
+          "utilization_prefill": 0.03211729166666667,
+          "utilization_decode": 0.029305833333333316,
+          "queue_wait_time_decode": 9.225664362213738e-07,
+          "throughput": 0.9366666666666666
+        },
+        {
+          "arrival_rate": 1.5,
+          "mean_ttft": 0.07081835147832648,
+          "p99_ttft": 0.3292050000000047,
+          "utilization_prefill": 0.04928625000000001,
+          "utilization_decode": 0.04580916666666666,
+          "queue_wait_time_decode": 1.4481207596413e-06,
+          "throughput": 1.4433333333333334
+        },
+        {
+          "arrival_rate": 2.0,
+          "mean_ttft": 0.07349059555875943,
+          "p99_ttft": 0.3420674999999919,
+          "utilization_prefill": 0.06893729166666664,
+          "utilization_decode": 0.06231333333333332,
+          "queue_wait_time_decode": 1.9781072812632792e-06,
+          "throughput": 1.9333333333333333
+        },
+        {
+          "arrival_rate": 2.5,
+          "mean_ttft": 0.07253853018711998,
+          "p99_ttft": 0.32233500000000614,
+          "utilization_prefill": 0.08572770833333329,
+          "utilization_decode": 0.08008291666666664,
+          "queue_wait_time_decode": 2.55371845131503e-06,
+          "throughput": 2.44
+        },
+        {
+          "arrival_rate": 3.0,
+          "mean_ttft": 0.0724296750495654,
+          "p99_ttft": 0.31927499999999603,
+          "utilization_prefill": 0.09991791666666668,
+          "utilization_decode": 0.09589416666666664,
+          "queue_wait_time_decode": 3.0702986407258846e-06,
+          "throughput": 2.8566666666666665
+        },
+        {
+          "arrival_rate": 3.5,
+          "mean_ttft": 0.07200643657605536,
+          "p99_ttft": 0.3181200000000057,
+          "utilization_prefill": 0.11543583333333335,
+          "utilization_decode": 0.11080624999999998,
+          "queue_wait_time_decode": 3.5613502798619886e-06,
+          "throughput": 3.32
+        },
+        {
+          "arrival_rate": 4.0,
+          "mean_ttft": 0.07132695897699597,
+          "p99_ttft": 0.29033641951832,
+          "utilization_prefill": 0.13388979166666673,
+          "utilization_decode": 0.12839083333333332,
+          "queue_wait_time_decode": 4.1452671165370296e-06,
+          "throughput": 3.8833333333333333
+        },
+        {
+          "arrival_rate": 4.5,
+          "mean_ttft": 0.07148103231675748,
+          "p99_ttft": 0.3173466404674604,
+          "utilization_prefill": 0.15352833333333352,
+          "utilization_decode": 0.14552958333333338,
+          "queue_wait_time_decode": 4.719506430249985e-06,
+          "throughput": 4.46
+        },
+        {
+          "arrival_rate": 5.0,
+          "mean_ttft": 0.07164154219977313,
+          "p99_ttft": 0.31134500000000637,
+          "utilization_prefill": 0.17048062500000022,
+          "utilization_decode": 0.16244374999999997,
+          "queue_wait_time_decode": 5.291249802527324e-06,
+          "throughput": 4.943333333333333
+        },
+        {
+          "arrival_rate": 6.0,
+          "mean_ttft": 0.07220272298142874,
+          "p99_ttft": 0.3107799999999838,
+          "utilization_prefill": 0.20257958333333362,
+          "utilization_decode": 0.19390458333333335,
+          "queue_wait_time_decode": 6.368225244834794e-06,
+          "throughput": 5.8966666666666665
+        },
+        {
+          "arrival_rate": 7.0,
+          "mean_ttft": 0.07409368917316404,
+          "p99_ttft": 0.3108849999999813,
+          "utilization_prefill": 0.2365697916666667,
+          "utilization_decode": 0.2191833333333333,
+          "queue_wait_time_decode": 7.246560487372657e-06,
+          "throughput": 6.843333333333334
+        },
+        {
+          "arrival_rate": 8.0,
+          "mean_ttft": 0.07444839354954537,
+          "p99_ttft": 0.3081999999999903,
+          "utilization_prefill": 0.26747395833333326,
+          "utilization_decode": 0.246488333333333,
+          "queue_wait_time_decode": 8.208590888443567e-06,
+          "throughput": 7.826666666666667
+        },
+        {
+          "arrival_rate": 9.0,
+          "mean_ttft": 0.07632296519224255,
+          "p99_ttft": 0.32790608076451955,
+          "utilization_prefill": 0.3034466666666667,
+          "utilization_decode": 0.2788320833333331,
+          "queue_wait_time_decode": 9.366416995201879e-06,
+          "throughput": 8.85
+        },
+        {
+          "arrival_rate": 10.0,
+          "mean_ttft": 0.07774266509550562,
+          "p99_ttft": 0.34142422917148846,
+          "utilization_prefill": 0.33475895833333336,
+          "utilization_decode": 0.30572958333333283,
+          "queue_wait_time_decode": 1.0344721313376134e-05,
+          "throughput": 9.81
+        }
+      ],
+      "bottleneck_threshold": null,
+      "saturation_point": null
+    },
+    "2_prefill_2_decode_slow": {
+      "results": [
+        {
+          "arrival_rate": 0.5,
+          "mean_ttft": 0.07251640246682126,
+          "p99_ttft": 0.3176835617054769,
+          "utilization_prefill": 0.016495624999999996,
+          "utilization_decode": 0.06966666666666667,
+          "queue_wait_time_decode": 1.8045242617855294e-05,
+          "throughput": 0.5
+        },
+        {
+          "arrival_rate": 1.0,
+          "mean_ttft": 0.07539072191012061,
+          "p99_ttft": 0.3752747358693772,
+          "utilization_prefill": 0.03211729166666667,
+          "utilization_decode": 0.11722333333333326,
+          "queue_wait_time_decode": 3.1130440324839357e-05,
+          "throughput": 0.9366666666666666
+        },
+        {
+          "arrival_rate": 1.5,
+          "mean_ttft": 0.08236491652508376,
+          "p99_ttft": 0.40474373293779425,
+          "utilization_prefill": 0.04928625000000001,
+          "utilization_decode": 0.18323666666666663,
+          "queue_wait_time_decode": 5.04294266910568e-05,
+          "throughput": 1.44
+        },
+        {
+          "arrival_rate": 2.0,
+          "mean_ttft": 0.08858041439208722,
+          "p99_ttft": 0.4885021716468891,
+          "utilization_prefill": 0.06893729166666664,
+          "utilization_decode": 0.24925333333333327,
+          "queue_wait_time_decode": 7.118486588579347e-05,
+          "throughput": 1.93
+        },
+        {
+          "arrival_rate": 2.5,
+          "mean_ttft": 0.10566431887718902,
+          "p99_ttft": 0.7474664080453479,
+          "utilization_prefill": 0.08572770833333329,
+          "utilization_decode": 0.32033166666666657,
+          "queue_wait_time_decode": 9.535563072471647e-05,
+          "throughput": 2.4366666666666665
+        },
+        {
+          "arrival_rate": 3.0,
+          "mean_ttft": 0.12314482679602567,
+          "p99_ttft": 0.936512169186079,
+          "utilization_prefill": 0.09991791666666668,
+          "utilization_decode": 0.38357666666666657,
+          "queue_wait_time_decode": 0.00011864981739519552,
+          "throughput": 2.8533333333333335
+        },
+        {
+          "arrival_rate": 3.5,
+          "mean_ttft": 0.1396688606457614,
+          "p99_ttft": 1.1050636598367847,
+          "utilization_prefill": 0.11543583333333335,
+          "utilization_decode": 0.4432249999999999,
+          "queue_wait_time_decode": 0.0001423535835300541,
+          "throughput": 3.316666666666667
+        },
+        {
+          "arrival_rate": 4.0,
+          "mean_ttft": 0.1594156389017535,
+          "p99_ttft": 1.181283746548149,
+          "utilization_prefill": 0.13388979166666673,
+          "utilization_decode": 0.5102516666666667,
+          "queue_wait_time_decode": 0.00017125431700432622,
+          "throughput": 3.86
+        },
+        {
+          "arrival_rate": 4.5,
+          "mean_ttft": 0.2360033934258018,
+          "p99_ttft": 1.8466525301044185,
+          "utilization_prefill": 0.15352833333333352,
+          "utilization_decode": 0.5821183333333335,
+          "queue_wait_time_decode": 0.000205277473790126,
+          "throughput": 4.46
+        },
+        {
+          "arrival_rate": 5.0,
+          "mean_ttft": 0.3102335112668746,
+          "p99_ttft": 2.1708605120091673,
+          "utilization_prefill": 0.17048062500000022,
+          "utilization_decode": 0.6490900000000001,
+          "queue_wait_time_decode": 0.00024024176295978273,
+          "throughput": 4.92
+        },
+        {
+          "arrival_rate": 6.0,
+          "mean_ttft": 0.5363713923077792,
+          "p99_ttft": 2.7199027803430598,
+          "utilization_prefill": 0.20257958333333362,
+          "utilization_decode": 0.7731350000000001,
+          "queue_wait_time_decode": 0.0003150856043655986,
+          "throughput": 5.886666666666667
+        },
+        {
+          "arrival_rate": 7.0,
+          "mean_ttft": 1.0920423832574362,
+          "p99_ttft": 3.6754033438249154,
+          "utilization_prefill": 0.2365697916666667,
+          "utilization_decode": 0.8767333333333333,
+          "queue_wait_time_decode": 0.0003902605495875125,
+          "throughput": 6.843333333333334
+        },
+        {
+          "arrival_rate": 8.0,
+          "mean_ttft": 6.125709859886071,
+          "p99_ttft": 11.944861203956215,
+          "utilization_prefill": 0.26747395833333326,
+          "utilization_decode": 0.9817066666666654,
+          "queue_wait_time_decode": 0.00048203530089561497,
+          "throughput": 7.776666666666666
+        },
+        {
+          "arrival_rate": 9.0,
+          "mean_ttft": 20.782745999431523,
+          "p99_ttft": 33.34442828175762,
+          "utilization_prefill": 0.3034466666666667,
+          "utilization_decode": 0.9995933333333318,
+          "queue_wait_time_decode": 0.0004995934986438832,
+          "throughput": 7.963333333333333
+        },
+        {
+          "arrival_rate": 10.0,
+          "mean_ttft": 35.58199836153569,
+          "p99_ttft": 56.06246989631126,
+          "utilization_prefill": 0.33475895833333336,
+          "utilization_decode": 0.9996849999999984,
+          "queue_wait_time_decode": 0.0004996850991937524,
+          "throughput": 7.966666666666667
+        }
+      ],
+      "bottleneck_threshold": 7.0,
+      "saturation_point": 8.0
+    }
+  },
+  "key_insights": [
+    "2_prefill_1_decode: Bottleneck at 7.0 req/s",
+    "2_prefill_1_decode: Saturation at 8.0 req/s",
+    "2_prefill_2_decode_slow: Bottleneck at 7.0 req/s",
+    "2_prefill_2_decode_slow: Saturation at 8.0 req/s"
+  ],
+  "bottleneck_analysis": {}
+}

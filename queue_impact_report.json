@@ -1,94 +1,28 @@
 {
   "study_parameters": {
-    "simulation_seconds": 120.0,
-    "warmup_seconds": 20.0,
-    "total_scenarios": 4
+    "simulation_seconds": 300.0,
+    "warmup_seconds": 30.0,
+    "total_scenarios": 1
   },
   "scenarios": [
     {
       "name": "medium_load_fcfs",
-      "arrival_rate": 0.5,
-      "ttft_metrics": {
-        "mean": 0.05940441176470838,
-        "p50": 0.05037499999999895,
-        "p90": 0.10537500000000932,
-        "p99": 0.196687500000003
-      },
-      "performance_metrics": {
-        "throughput": 0.55,
-        "utilization_prefill": 0.0161390625,
-        "utilization_decode": 0.032389583333333326,
-        "utilization_gpu": 0.0
-      },
-      "queue_metrics": {
-        "wait_time_prefill": 0.00028248033540925863,
-        "wait_time_decode": 4.115345072756399e-06,
-        "service_time_prefill": 0.06944662405642538,
-        "service_time_decode": 0.0005
-      }
-    },
-    {
-      "name": "medium_load_fcfs",
-      "arrival_rate": 1.0,
-      "ttft_metrics": {
-        "mean": 0.06590154743734226,
-        "p50": 0.05206250000000523,
-        "p90": 0.12448749999999792,
-        "p99": 0.2836199999999981
-      },
-      "performance_metrics": {
-        "throughput": 1.0083333333333333,
-        "utilization_prefill": 0.030698958333333328,
-        "utilization_decode": 0.07717708333333334,
-        "utilization_gpu": 0.0
-      },
-      "queue_metrics": {
-        "wait_time_prefill": 0.0005412933251928196,
-        "wait_time_decode": 1.0034346203227677e-05,
-        "service_time_prefill": 0.06944662405642538,
-        "service_time_decode": 0.0005
-      }
-    },
-    {
-      "name": "medium_load_fcfs",
       "arrival_rate": 2.0,
       "ttft_metrics": {
-        "mean": 0.07428160152958502,
-        "p50": 0.054000000000002046,
-        "p90": 0.16108848459927572,
-        "p99": 0.28716413760351706
+        "mean": 0.07522462275676936,
+        "p50": 0.05449999999999022,
+        "p90": 0.1610030907595558,
+        "p99": 0.3420674999999919
       },
       "performance_metrics": {
-        "throughput": 1.9083333333333334,
-        "utilization_prefill": 0.06443645833333334,
-        "utilization_decode": 0.124775,
+        "throughput": 1.9333333333333333,
+        "utilization_prefill": 0.06893729166666664,
+        "utilization_decode": 0.12462666666666664,
         "utilization_gpu": 0.0
       },
       "queue_metrics": {
-        "wait_time_prefill": 0.0011559668285416492,
-        "wait_time_decode": 1.6634670506205924e-05,
-        "service_time_prefill": 0.06944662405642538,
-        "service_time_decode": 0.0005
-      }
-    },
-    {
-      "name": "medium_load_fcfs",
-      "arrival_rate": 3.0,
-      "ttft_metrics": {
-        "mean": 0.07808043797203187,
-        "p50": 0.05431250000000176,
-        "p90": 0.1763375000000018,
-        "p99": 0.33346500000000295
-      },
-      "performance_metrics": {
-        "throughput": 2.775,
-        "utilization_prefill": 0.09625052083333337,
-        "utilization_decode": 0.17447708333333328,
-        "utilization_gpu": 0.0
-      },
-      "queue_metrics": {
-        "wait_time_prefill": 0.0017555549741958606,
-        "wait_time_decode": 2.389412394393843e-05,
+        "wait_time_prefill": 0.001239592623580598,
+        "wait_time_decode": 1.6613580940328322e-05,
         "service_time_prefill": 0.06944662405642538,
         "service_time_decode": 0.0005
       }
@@ -96,12 +30,12 @@
   ],
   "summary_statistics": {
     "mean_ttft_range": [
-      0.05940441176470838,
-      0.07808043797203187
+      0.07522462275676936,
+      0.07522462275676936
     ],
-    "ttft_variance": 5.283245885667032e-05,
+    "ttft_variance": 0.0,
     "scenarios_with_high_queueing": 0,
-    "scenarios_with_low_queueing": 4
+    "scenarios_with_low_queueing": 1
   },
   "key_insights": []
 }
