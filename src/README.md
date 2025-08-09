@@ -92,3 +92,4 @@ Look for `prompt_tokens_log`, `prompt_tokens_real`, `output_tokens_log`, and `ou
 - [Architecture Design](../docs/ARCHITECTURE.md) - System design and extensibility
 - [TTFT Theory](../docs/TTFT_Disaggregated.md) - Theoretical background
 - [Project Summary](../docs/SUMMARY.md) - Development history and features
+- [Tutorials](../docs/tutorial/) - Analysis guides and tutorials
