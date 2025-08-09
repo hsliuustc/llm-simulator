@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import math
 import random
 from dataclasses import dataclass
-from typing import Callable, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import simpy
@@ -18,28 +17,43 @@ class Request:
 
 
 @dataclass
-class TTFTRecord:
-    event_time: float
-    ttft_seconds: float
-
-
-@dataclass
 class Metrics:
-    ttft_records: List[TTFTRecord]
+    ttft_values: List[float]
+    ttft_times: List[float]
     completed_requests: int
     dropped_requests: int
     start_time: float
     end_time: float
+    # GPU time accounting (seconds of GPU occupancy)
+    mono_gpu_time_total: float
+    prefill_gpu_time_total: float
+    decode_gpu_time_total: float
 
-    def add_ttft(self, event_time: float, ttft_seconds: float) -> None:
-        self.ttft_records.append(TTFTRecord(event_time=event_time, ttft_seconds=ttft_seconds))
+    def add_ttft(self, value: float, event_time: float) -> None:
+        self.ttft_values.append(value)
+        self.ttft_times.append(event_time)
+
+    def add_gpu_time_mono(self, t: float) -> None:
+        self.mono_gpu_time_total += t
+
+    def add_gpu_time_prefill(self, t: float) -> None:
+        self.prefill_gpu_time_total += t
+
+    def add_gpu_time_decode(self, t: float) -> None:
+        self.decode_gpu_time_total += t
+
+    def mark_completed(self) -> None:
+        self.completed_requests += 1
 
     def finalize(self, end_time: float) -> None:
         self.end_time = end_time
 
     def summary(self, warmup: float = 0.0) -> dict:
-        filtered = [r.ttft_seconds for r in self.ttft_records if r.event_time >= warmup]
-        if not filtered:
+        filtered_values = []
+        for i, event_time in enumerate(self.ttft_times):
+            if event_time >= warmup:
+                filtered_values.append(self.ttft_values[i])
+        if not filtered_values:
             return {
                 "num_samples": 0,
                 "mean_ttft_s": float("nan"),
@@ -47,9 +61,9 @@ class Metrics:
                 "p90_ttft_s": float("nan"),
                 "p99_ttft_s": float("nan"),
             }
-        arr = np.array(filtered, dtype=float)
+        arr = np.array(filtered_values, dtype=float)
         return {
-            "num_samples": len(filtered),
+            "num_samples": len(filtered_values),
             "mean_ttft_s": float(arr.mean()),
             "p50_ttft_s": float(np.percentile(arr, 50)),
             "p90_ttft_s": float(np.percentile(arr, 90)),
@@ -64,7 +78,6 @@ def poisson_interarrival_time(rate_per_s: float, rng: random.Random) -> float:
 
 
 def lognormal_tokens(mean: float, sigma: float, min_value: int, rng: random.Random) -> int:
-    # numpy-like lognormal parameterization in Python's random isn't available; use numpy
     val = np.random.lognormal(mean=mean, sigma=sigma)
     return max(int(val), min_value)
 
@@ -114,6 +127,8 @@ class DisaggregatedSimulator:
         self.decode_rate = decode_tokens_per_s
         self.prefill_pool = simpy.Resource(env, capacity=prefill_gpus)
         self.decode_pool = simpy.Resource(env, capacity=decode_gpus)
+        self.prefill_gpus = prefill_gpus
+        self.decode_gpus = decode_gpus
 
     def process(self, req: Request, metrics: Metrics) -> simpy.events.Event:
         # Stage 1: Prefill on prefill pool
@@ -121,17 +136,21 @@ class DisaggregatedSimulator:
             yield prefill_ticket
             prefill_time = req.prompt_tokens / self.prefill_rate
             yield self.env.timeout(prefill_time)
+            metrics.add_gpu_time_prefill(prefill_time)
         # Stage 2: First decode token on decode pool
         with self.decode_pool.request() as decode_ticket:
             yield decode_ticket
             first_token_time = 1.0 / self.decode_rate
             yield self.env.timeout(first_token_time)
             ttft = self.env.now - req.arrival_time
-            metrics.add_ttft(self.env.now, ttft)
+            metrics.add_ttft(ttft, self.env.now)
             # Continue generating remaining tokens while holding decode pool
             remaining_decode_tokens = max(req.output_tokens - 1, 0)
             remaining_decode_time = remaining_decode_tokens / self.decode_rate
+            total_decode_time = first_token_time + remaining_decode_time
+            metrics.add_gpu_time_decode(total_decode_time)
             yield self.env.timeout(remaining_decode_time)
+            metrics.mark_completed()
 
 
 def run_simulation(
@@ -160,7 +179,17 @@ def run_simulation(
         prefill_gpus, decode_gpus, prefill_r, decode_r = disagg_params
         sim = DisaggregatedSimulator(env, prefill_gpus, decode_gpus, prefill_r, decode_r)
 
-    metrics = Metrics(ttft_records=[], completed_requests=0, dropped_requests=0, start_time=0.0, end_time=0.0)
+    metrics = Metrics(
+        ttft_values=[],
+        ttft_times=[],
+        completed_requests=0,
+        dropped_requests=0,
+        start_time=0.0,
+        end_time=0.0,
+        mono_gpu_time_total=0.0,
+        prefill_gpu_time_total=0.0,
+        decode_gpu_time_total=0.0,
+    )
 
     def arrival_process(env: simpy.Environment) -> simpy.events.Event:
         request_id = 0
@@ -170,7 +199,12 @@ def run_simulation(
             arrival_time = env.now
             prompt_tokens = lognormal_tokens(*prompt_lognormal, rng=rng)
             output_tokens = lognormal_tokens(*output_lognormal, rng=rng)
-            req = Request(request_id=request_id, arrival_time=arrival_time, prompt_tokens=prompt_tokens, output_tokens=output_tokens)
+            req = Request(
+                request_id=request_id,
+                arrival_time=arrival_time,
+                prompt_tokens=prompt_tokens,
+                output_tokens=output_tokens,
+            )
             request_id += 1
             env.process(sim.process(req, metrics))
 
@@ -185,5 +219,23 @@ def run_simulation(
     stats.update({
         "elapsed_s": elapsed,
         "mode": mode,
+        "throughput_rps": metrics.completed_requests / elapsed if elapsed > 0 else float("nan"),
     })
+
+    if mode == "mono":
+        util = metrics.mono_gpu_time_total / (num_gpus * elapsed) if elapsed > 0 else float("nan")
+        stats.update({
+            "utilization_gpu": util,
+            "num_gpus": num_gpus,
+        })
+    else:
+        util_prefill = metrics.prefill_gpu_time_total / (prefill_gpus * elapsed) if elapsed > 0 else float("nan")
+        util_decode = metrics.decode_gpu_time_total / (decode_gpus * elapsed) if elapsed > 0 else float("nan")
+        stats.update({
+            "utilization_prefill": util_prefill,
+            "utilization_decode": util_decode,
+            "prefill_gpus": prefill_gpus,
+            "decode_gpus": decode_gpus,
+        })
+
     return metrics, stats

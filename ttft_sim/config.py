@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Dict, Any
+import math
 import yaml
 
 
@@ -12,8 +13,9 @@ class ArrivalConfig:
 
 @dataclass
 class LogNormalConfig:
-    mean: float = 6.0  # log-space mean for numpy.lognormal
-    sigma: float = 1.0  # log-space sigma
+    # Log-space parameters for numpy.lognormal
+    mean: float = 6.0
+    sigma: float = 1.0
     min_value: int = 1
 
 
@@ -70,6 +72,52 @@ class SimConfig:
         }
 
 
+# --------- helpers for token distributions ---------
+
+def _real_mean_std_to_log_params(real_mean: float, real_std: float) -> tuple[float, float]:
+    if real_mean <= 0 or real_std <= 0:
+        raise ValueError("real_mean and real_std must be > 0 for lognormal")
+    variance = real_std * real_std
+    sigma2 = math.log(1.0 + variance / (real_mean * real_mean))
+    sigma = math.sqrt(sigma2)
+    mu = math.log(real_mean) - 0.5 * sigma2
+    return mu, sigma
+
+
+def _p50_p90_to_log_params(p50: float, p90: float) -> tuple[float, float]:
+    if p50 <= 0 or p90 <= 0 or p90 <= p50:
+        raise ValueError("Require 0 < p50 < p90 for lognormal")
+    z90 = 1.2815515655446004  # standard normal quantile for 0.9
+    mu = math.log(p50)
+    sigma = (math.log(p90) - math.log(p50)) / z90
+    return mu, sigma
+
+
+def _parse_token_dist(data: Dict[str, Any], default_min: int) -> LogNormalConfig:
+    # Backward compatible: if no 'mode', treat 'mean'/'sigma' as log-space
+    mode = data.get("mode", "log")
+    min_value = int(data.get("min_value", default_min))
+
+    if mode == "log":
+        mu = float(data.get("mean", 6.0))
+        sigma = float(data.get("sigma", 1.0))
+        return LogNormalConfig(mean=mu, sigma=sigma, min_value=min_value)
+
+    if mode == "real_mean_std":
+        real_mean = float(data["mean"])  # required
+        real_std = float(data["std"])    # required
+        mu, sigma = _real_mean_std_to_log_params(real_mean, real_std)
+        return LogNormalConfig(mean=mu, sigma=sigma, min_value=min_value)
+
+    if mode == "p50_p90":
+        p50 = float(data["p50"])  # required
+        p90 = float(data["p90"])  # required
+        mu, sigma = _p50_p90_to_log_params(p50, p90)
+        return LogNormalConfig(mean=mu, sigma=sigma, min_value=min_value)
+
+    raise ValueError(f"Unknown token distribution mode: {mode}")
+
+
 def load_config(path: Optional[str]) -> SimConfig:
     if path is None:
         return SimConfig()
@@ -89,10 +137,13 @@ def load_config(path: Optional[str]) -> SimConfig:
 
     if "arrival" in data:
         cfg.arrival = ArrivalConfig(**data["arrival"])  # type: ignore[arg-type]
+
     if "prompt_tokens" in data:
-        cfg.prompt_tokens = PromptConfig(**data["prompt_tokens"])  # type: ignore[arg-type]
+        cfg.prompt_tokens = PromptConfig(**vars(_parse_token_dist(data["prompt_tokens"], cfg.prompt_tokens.min_value)))
+
     if "output_tokens" in data:
-        cfg.output_tokens = OutputConfig(**data["output_tokens"])  # type: ignore[arg-type]
+        cfg.output_tokens = OutputConfig(**vars(_parse_token_dist(data["output_tokens"], cfg.output_tokens.min_value)))
+
     if "cluster_mono" in data:
         cfg.cluster_mono = ClusterMonolithic(**data["cluster_mono"])  # type: ignore[arg-type]
     if "cluster_disagg" in data:
